@@ -15,8 +15,6 @@
         
         return $dbConn;
     }
-    
-    $connection = getDataBaseConnection("otter_express");
 
     function getMultipleQueryResults($sql, $connection) {
         
@@ -39,7 +37,7 @@
         }
     }
     
-    function getSingleQueryResults($sql, $connection) {
+    function getSingleQueryResult($sql, $connection) {
         
         if (is_string($sql) ) {
                         
