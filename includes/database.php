@@ -3,7 +3,6 @@
     function getDataBaseConnection($dbname) {
         // Database information and credentials
         $host = "localhost";
-        //$dbname = "otter_express";
         $username = "web_user";
         $password = "s3cr3t";
         
@@ -59,11 +58,14 @@
     
     function displayQueryResults($results) {
         
+        // Check if there are any results in the array
         if (isset($results) ) {
             
+            // Get the first key of the associative array
             reset($results);
             $first_key = key($results);
             
+            // Display the mulitple lines of results (from a fetchAll call) in a table
             if (is_array($results[$first_key]) ) {
                 
                 echo "<table>";
@@ -77,6 +79,7 @@
                 echo "</table>";
             }
             
+            // Display the one row of results (from a fetch call) inside a table
             else {
                 echo "<table>";
                 echo "<tr>";
@@ -88,6 +91,7 @@
             }
         }
         
+        // Display "NULL" when the results are null
         else {
             echo "NULL<br>";
         }
