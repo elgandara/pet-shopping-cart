@@ -2,8 +2,8 @@
     
     function getDataBaseConnection($dbname) {
         // Database information and credentials
-        $host = "sori6740-cst336-2480559";
-        $username = "web_user";
+        $host = "localhost";
+        $username = "sori6740";
         $password = "s3cr3t";
         
         // Establishing a connection
