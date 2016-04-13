@@ -1,4 +1,4 @@
-h1 {
+h1,h3 {
     text-align:center;
 }
 
@@ -30,7 +30,9 @@ body {
    /* background-color: #FFD2CE; */
 }
 
-
+table, td, th {
+    border: solid 2px black;
+}
 
 td {
     padding: 5px;

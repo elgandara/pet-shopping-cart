@@ -4,11 +4,29 @@
     
     $dbConnection = getDataBaseConnection('pet_shop');
     
+    if (!isset($_SESSION['count'] ) ) {
+        $_SESSION['count'] = 0;
+    }
+    
+    if (!isset($_SESSION['cart']) ) {
+        $_SESSION['cart'] = array();
+    }
+    
     // Add the pet to the cart
     
     if (isset($_GET['addPet']) ) {
-        $petId = $_GET['addPet'];
-        $info = array();
+        
+        $petId = $_SESSION['count'];
+        $name = $_GET['addName'];
+        $size = $_GET['addSize'];
+        $sex = $_GET['addSex'];
+        $price = $_GET['addPrice'];
+        
+        $info = array("name" => $name, "size" => $size, "sex" => $sex, "price" => $price);
+        
+        $_SESSION['cart'][$petId] = $info;
+        
+        $_SESSION['count'] = $_SESSION['count'] + 1;
     }
     
     function getInfo() {
@@ -27,22 +45,21 @@
         $sql = "SELECT name, size, color, sex, price
                 FROM `pet` WHERE 1 ";
         
-        if(!empty($_GET['speciesId']))
+        if(!empty($_GET['speciesName']))
         {
             $sql .= " AND speciesID = '" . $_GET['speciesName'] . "'";
         }
         if(!empty($_GET['color']))
         {
-            $sql .= " AND color = '" . $_GET['animalColor'] . " '";
+            $sql .= " AND color = '" . $_GET['color'] . " '";
         }
         if(!empty($_GET['size']) )
         {
-            $sql .= " AND size = '" . $_GET['animalSize'] . "'";
+            $sql .= " AND size = '" . $_GET['size'] . "'";
         }
         if(!empty($_GET['sex']))
         {
-          //  echo "<br>SEX: $_GET['sex']<br>;
-            $sql .= " AND sex = '" . $_GET['animalSex'] . "'";
+            $sql .= " AND sex = '" . $_GET['sex'] . "'";
         }
         
         if(isset($_GET['maxPrice']) && !empty($_GET['maxPrice']))
@@ -57,13 +74,13 @@
         
         if(isset($_GET['orderBy']) )
         {
-            $sql .= " ORDER BY '" . $_GET['orderBy'] . "' ASC";
+            $sql .= " ORDER BY " . $_GET['orderBy'] . " ASC";
         }
         
         $statement = $dbConnection->prepare($sql);
         $statement->execute();
         $records = $statement->fetchALL(PDO::FETCH_ASSOC);
-        
+        //var_dump($sql);
         return $records;
     }
     
@@ -121,6 +138,7 @@
         <title> Rescue Pet Shop </title>
     </head>
     <body>
+        <h3> <a href = "https://docs.google.com/document/d/1Eo2y2zFKD88kuV4mdn3TohApAFYa7fsRG6NAc5v-Th0/edit?usp=sharing" target = "_blank"> Documentation </a> </h3>
         <img id="banner" src = "img/banner.png" alt="Shop Banner" title="Shop Banner" />
         <br />
  
@@ -209,7 +227,6 @@
                 <br /><br />
                 <input type="submit" value="Shopping Cart" name="shoppingCart" formaction="shopping_cart.php"/>
                 <br /><br />
-                <input type="submit" value="Add to Cart" name="AddCart"/>
             </td> 
         
         </tr>    
@@ -217,10 +234,9 @@
     </table>
     </center>
      
-     <center>  
-    <!-- <div style="float:right"> -->
+    <center>  
+     <div style="float:right"> 
     <br /><br />
-    
     <table border=1>
         <tr>
             <th> Pet Name </th>
@@ -240,8 +256,12 @@
             $petShopList = getSearch();
             foreach($petShopList as $pet) {
                 
-                $petId = "$pet['petId']";
-                $link = "index.php?addPet=$petId";
+                $petId = $pet['petId'];
+                $name = $pet['name'];
+                $size = $pet['size'];
+                $sex = $pet['sex'];
+                $price = $pet['price'];
+                $link = "index.php?addPet=$petId&addName=$name&addSize=$size&addSex=$sex&addPrice=$price&";
                 $anchor = "<a href='$link' > Add to Cart </a>";
                 
                 echo "<tr>";
@@ -261,7 +281,7 @@
     </center> 
   
     
-  <!--  </div> -->
+    </div>
 
     </body>
 </html>

@@ -31,8 +31,15 @@
     // (key -> petId | value -> array(name, size, color, sex, price)
     function displayShoppingCart() {
 
-        if (isset($_SESSION['cart']) ) {
+        if (sizeOf($_SESSION['cart']) > 0) {
             echo "<table>";
+            
+            echo "<th> Name </th>";
+            echo "<th> Size </th>";
+            echo "<th> Gender </th>";
+            echo "<th> Price </th>";
+            echo "<th> Remove </th>";
+            
             foreach ($_SESSION['cart'] as $petId => $petInfo) {
                 echo "<tr>";
                 foreach ($petInfo as $data) {
